@@ -1,0 +1,42 @@
+@use "sass:math"
+@import "colors"
+
+$pw-spinner-height: 6px
+
+@mixin trans_delay_loader
+  @for $i from 1 through 4
+    &:nth-child(#{$i})
+      animation-delay: #{$i * .15}s
+//transition: all .2s #{$i * .1}s ease-in
+
+.spinner-container
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 100%
+  height: 100%
+
+.spinner
+  height: $pw-spinner-height * 5
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+
+.spinner-component
+  @include trans_delay_loader
+  width: $pw-spinner-height
+  height: $pw-spinner-height * 5
+  max-height: $pw-spinner-height
+  border-radius: math.div($pw-spinner-height, 2)
+  margin-right: 2px
+  background: linear-gradient($pw-light-purple, $pw-dark-purple)
+  animation: stretch_unstretch 1s ease-in-out infinite
+
+@keyframes stretch_unstretch
+  0%
+    max-height: $pw-spinner-height
+  30%
+    max-height: $pw-spinner-height * 5
+  100%
+    max-height: $pw-spinner-height

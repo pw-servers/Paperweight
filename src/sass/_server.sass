@@ -1,0 +1,41 @@
+@use "sass:math"
+@import "colors"
+@import "util"
+
+$pw-server-icon-size: 5rem
+
+.server-icon-container
+  float: left
+  height: $pw-server-icon-size
+  max-width: $pw-server-icon-size
+  box-sizing: content-box
+  border: 3px solid $pw-light-gray
+  border-radius: math.div($pw-server-icon-size, 2)
+  background-color: #FFF
+  margin-bottom: 16px
+  overflow: hidden
+  white-space: nowrap
+  font-size: 1.3rem
+  width: fit-content
+  transition: .3s max-width
+  cursor: pointer
+  transform: translateZ(0)
+  user-select: none
+  z-index: 100
+  &:hover
+    max-width: 300px
+  &.expanded
+    max-width: 300px
+  &.selected
+    border: 3px solid $pw-dark-purple
+
+  .server-name
+    margin-right: 16px
+
+.server-icon
+  min-width: $pw-server-icon-size
+  text-align: center
+  font-size: 2.5rem
+
+#addServer
+  animation-delay: 1s

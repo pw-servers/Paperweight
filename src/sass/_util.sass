@@ -1,0 +1,20 @@
+@import "colors"
+
+@mixin gradient-border
+    background-image: $pw-gradient
+    padding: 3px
+
+@mixin animate-opacity-in($children, $length, $delay-per-n)
+    & *
+        animation: #{$length}s ease-in-out both opacity_load
+
+    @for $i from 1 through $children
+        &:nth-child(#{$i})
+            animation-delay: #{$i * $delay-per-n}s
+
+
+@keyframes opacity_load
+    from
+        opacity: 0
+    to
+        opacity: 1

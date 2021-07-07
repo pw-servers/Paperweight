@@ -1,0 +1,21 @@
+@use "colors"
+@import "util"
+
+$pw-dashboard-sidebar-width: 120px
+
+.sidebar
+  @include animate-opacity-in(10, .5, .5)
+  position: absolute
+  background-color: #F5F5FE
+  left: 0
+  top: 100px
+  width: $pw-dashboard-sidebar-width
+  height: calc(100vh - 100px)
+  padding-left: 20px
+  padding-top: 20px
+  border-right: 3px solid $pw-light-gray
+
+#dashboardContainer
+  margin-left: $pw-dashboard-sidebar-width
+  padding: 20px
+
