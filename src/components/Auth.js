@@ -1,7 +1,7 @@
 import React from "react";
 
-import * as firebase from 'firebase/app'
 import "firebase/auth";
+import firebase from 'firebase/app'
 import {FirebaseAuthConsumer, IfFirebaseAuthed, IfFirebaseUnAuthed} from "@react-firebase/auth";
 import {ReactComponent as Icon} from "../icon/pw_icon.svg";
 import {Button} from "react-bootstrap"

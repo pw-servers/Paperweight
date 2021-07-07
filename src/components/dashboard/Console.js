@@ -4,7 +4,7 @@ import {socketConnect, getActiveEvents} from "../Socket";
 
 function Console(props) {
 
-
+	let consoleText; // Temp so I can view the landing page
 
     return (
         <Card className={"console"} style={{height: props.height + "px"}}>

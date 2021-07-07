@@ -6,10 +6,10 @@ import Container from 'react-bootstrap/Container';
 import React, {useState} from 'react';
 import 'firebase/firestore';
 import "firebase/auth";
+import firebase from 'firebase/app'
 import {FirebaseAuthProvider} from "@react-firebase/auth";
 import {FirestoreProvider} from "@react-firebase/firestore";
 import {socketConnect} from "./components/Socket";
-import * as firebase from 'firebase/app'
 
 function App() {
   let [connection, setConnection] = useState(null);

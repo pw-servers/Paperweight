@@ -2,7 +2,7 @@ import {ChevronDown, Gear, BoxArrowLeft} from "react-bootstrap-icons";
 import "firebase/auth";
 import {IfFirebaseAuthed} from "@react-firebase/auth";
 import React, {useState} from "react";
-import * as firebase from 'firebase/app'
+import firebase from 'firebase/app'
 
 export function UserDisplay(props) {
     const [showOptions, setOptions] = useState(false);
