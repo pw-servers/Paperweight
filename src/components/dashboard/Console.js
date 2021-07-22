@@ -22,11 +22,17 @@ function Console(props) {
     const connectionState = React.useContext(SocketContext);
 
     useEffect(() => {
-        connectionState.connection.on('history', (e) => {updateConsoleHistory(e.records)});
+        connectionState.connection.on('history', updateConsoleHistory);
         connectionState.connection.on('server_output', appendToConsole);
+
+        return () => {
+            connectionState.connection.removeListener('history', updateConsoleHistory);
+            connectionState.connection.removeListener('server_output', appendToConsole);
+        }
     })
 
-    function updateConsoleHistory(records) {
+    function updateConsoleHistory(event) {
+        const records = event.records;
         consoleText = "";
         setConsoleText(records.map(rec => {return (rec.args.text || "")}).join(""));
     }
