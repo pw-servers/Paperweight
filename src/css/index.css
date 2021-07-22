@@ -12,9 +12,10 @@
   z-index: 2;
   background-color: #FFF;
   max-height: 72px;
-  padding-top: 11px;
+  padding-top: 9.5px;
   padding-bottom: 20px;
   overflow-y: hidden;
+  box-sizing: border-box;
   border: 3px solid #dbdbe6;
   border-radius: 10px;
   user-select: none;
@@ -66,6 +67,8 @@
 #userPhoto {
   height: inherit;
   border-radius: 50%;
+  max-width: 50px;
+  overflow: hidden;
   background-image: linear-gradient(110deg, #5119de, #a191e9);
   padding: 3px;
 }
@@ -171,15 +174,21 @@
 }
 .console {
   overflow-x: hidden;
+  overflow-y: hidden;
+  height: 340px;
   font-family: monospace;
   border: 3px solid #dbdbe6;
   border-radius: 0.25rem;
 }
 
+.console-text {
+  white-space: pre-wrap;
+  overflow-y: scroll;
+  height: 300px;
+}
+
 .console-input-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  float: bottom;
   width: 100%;
   height: 40px;
   border-top: 3px solid #DDD;
@@ -187,14 +196,11 @@
 }
 
 .console-input {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  border: none;
-  background: none;
-  z-index: 10;
+  border: 3px;
+  background-color: #FFF;
+  z-index: 10000;
   border-radius: 0 0 0.25rem 0.25rem;
   font-family: monospace;
 }

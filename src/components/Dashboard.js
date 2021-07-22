@@ -1,9 +1,8 @@
 import React, {useState} from "react";
 import {IfFirebaseAuthed} from "@react-firebase/auth";
-import { io } from "socket.io-client";
 import Console from "./dashboard/Console";
 import {Sidebar} from "./dashboard/Sidebar";
-import {getActiveEvents, getActiveEndpoint} from "./Socket";
+import {SocketContext, socketConnect} from "./Socket";
 
 function DashboardContainer(props) {
     return (
@@ -16,18 +15,21 @@ function DashboardContainer(props) {
 export function Dashboard(props) {
 
     let [connection, setConnection] = useState(null);
+    let [endpoint, internalSetEndpoint] = useState(null);
 
-    setConnection(getActiveEvents());
+    async function setEndpoint(ip, port) {
+        internalSetEndpoint(ip + ":" + port);
+        setConnection(await socketConnect(ip, port));
+    }
 
-    // if(connection != null) {
-    //     connection.addListener((e) => {
-    //         console.log(e);
-    //     })
-    // }
+    let connectionState = {
+        connection,
+        endpoint,
+        setEndpoint
+    };
 
     function IfServerSelected(props) {
-
-        if(getActiveEndpoint() != null) {
+        if(connectionState.connection != null) {
             return <DashboardContainer />
         } else {
             return ""
@@ -38,10 +40,10 @@ export function Dashboard(props) {
         <IfFirebaseAuthed>
             {({ user }) => {
                 return (
-                    <div>
+                    <SocketContext.Provider value={connectionState}>
                         <Sidebar user={user} />
                         <IfServerSelected />
-                    </div>
+                    </SocketContext.Provider>
                 )
             }}
         </IfFirebaseAuthed>

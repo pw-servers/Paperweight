@@ -10,9 +10,10 @@ $pw-auth-user-display-container-height: 72px
   z-index: 2
   background-color: #FFF
   max-height: $pw-auth-user-display-container-height
-  padding-top: math.div($pw-auth-user-display-container-height - $pw-auth-user-display-height, 2)
+  padding-top: math.div($pw-auth-user-display-container-height - $pw-auth-user-display-height - 3px, 2)
   padding-bottom: 20px
   overflow-y: hidden
+  box-sizing: border-box
   border: 3px solid $pw-light-gray
   border-radius: 10px
   user-select: none
@@ -54,5 +55,7 @@ $pw-auth-user-display-container-height: 72px
 #userPhoto
   height: inherit
   border-radius: 50%
+  max-width: 50px
+  overflow: hidden
   @include gradient-border
 

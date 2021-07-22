@@ -1,28 +1,33 @@
 @import "colors"
 
+$pw-console-height: 340px
+$pw-console-input-height: 40px
+
 .console
   overflow-x: hidden
+  overflow-y: hidden
+  height: $pw-console-height
   font-family: monospace
   border: 3px solid $pw-light-gray
   border-radius: 0.25rem
 
+.console-text
+  white-space: pre-wrap
+  overflow-y: scroll
+  height: $pw-console-height - $pw-console-input-height
+
 .console-input-container
-  position: absolute
-  bottom: 0
-  left: 0
+  float: bottom
   width: 100%
-  height: 40px
+  height: $pw-console-input-height
   border-top: 3px solid #DDD
   border-width: 3px
 
 .console-input
-  position: absolute
-  top: 0
-  left: 0
   width: 100%
   height: 100%
-  border: none
-  background: none
-  z-index: 10
+  border: 3px
+  background-color: #FFF
+  z-index: 10000
   border-radius: 0 0 0.25rem 0.25rem
   font-family: monospace

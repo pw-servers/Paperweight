@@ -1,17 +1,10 @@
 import { io } from "socket.io-client";
 import {EventEmitter} from 'events';
+import React from "react";
 
 let currentConnection = null;
-let currentEvents = null;
 let currentEndpoint = null;
 let pendingPromise = null;
-
-// export const socket = io();
-// export const SocketContext = React.createContext({
-//     socket: null,
-//     endpoint: null,
-//     updateSocket: () => {}
-// });
 
 export async function socketConnect(ip, port) {
     if(currentConnection) {
@@ -22,7 +15,6 @@ export async function socketConnect(ip, port) {
     pendingPromise = new Promise((resolve, reject) => {
 
         let events = new EventEmitter();
-        currentEvents = events;
 
         let socket = io.connect(ip + ":" + port);
         currentConnection = socket;
@@ -30,20 +22,22 @@ export async function socketConnect(ip, port) {
 
         socket.on('connect', () => {
             console.log("Connected to " + ip + ":" + port);
+            socket.emit('action', 'history_request', {
+                "id": "default"
+            });
             resolve(events);
         })
 
-        socket.on('action', (obj) => {
-            console.log(obj);
+        socket.onAny((...args) => {
+            // console.log("[" + args[2] + "]: " + JSON.stringify(args[3]));
+            events.emit(args[2], args[3]);
+        })
+
+        events.on('action', (type, args) => {
+            socket.emit('action', type, args);
         })
     })
     return pendingPromise;
 }
 
-export function getActiveEvents() {
-    return currentEvents;
-}
-
-export function getActiveEndpoint() {
-    return currentEndpoint;
-}
+export const SocketContext = React.createContext(null);

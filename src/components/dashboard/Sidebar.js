@@ -1,11 +1,13 @@
-import React from "react";
+import React, {useContext} from "react";
 import {ErrorBoundary} from "../ErrorBoundary";
 import {FirestoreCollection, FirestoreDocument} from "@react-firebase/firestore";
 import {Spinner} from "../Loading";
 import {ServerComponent} from "../Server";
+import {SocketContext} from "../Socket";
 
 export function Sidebar(props) {
     const user = props.user;
+    const connectionState = useContext(SocketContext);
 
     return (
         <div className="d-flex flex-column justify-content-flex-start align-items-flex-start sidebar">

@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {Plus} from "react-bootstrap-icons";
-import {getActiveEndpoint, getActiveEvents, socketConnect} from "./Socket";
+import {getActiveEndpoint, getActiveEvents, socketConnect, SocketContext} from "./Socket";
 
 function ServerIcon(props) {
     // const type = props.type
@@ -26,7 +26,7 @@ export function ServerComponent(props) {
     const server = props.server;
     const clientInfo = props.clientInfo;
 
-    let [connection, setConnection] = useState(getActiveEvents());
+    const connectionState = useContext(SocketContext);
 
     if(props.addServerButton) {
         return (
@@ -37,8 +37,8 @@ export function ServerComponent(props) {
         )
     } else {
         return (
-            <div className={(getActiveEndpoint() === server.ip + ":" + server.port ? "selected " : "") + "d-flex flex-row align-items-center justify-content-flex-start server-icon-container"}
-            onClick={async () => {setConnection(await socketConnect(server.ip, server.port))}}>
+            <div className={(connectionState.endpoint === server.ip + ":" + server.port ? "selected " : "") + "d-flex flex-row align-items-center justify-content-flex-start server-icon-container"}
+            onClick={async () => {await connectionState.setEndpoint(server.ip, server.port)}}>
                 <ServerIcon name={clientInfo.name}/>
                 <span className="server-name">{clientInfo.name}</span>
             </div>
