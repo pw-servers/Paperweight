@@ -37,7 +37,7 @@ function Console(props) {
     function handleInput(e) {
         if (e.key === "Enter") {
             appendToConsole(e.target.value);
-            inputHistory.push(e.target.value);
+            inputHistory.unshift(e.target.value);
             setInputHistory(inputHistory);
             connectionState.connection.emit('action', 'server_input', {id: "default", text: e.target.value + "\r\n"});
             e.target.value = "";
@@ -48,7 +48,15 @@ function Console(props) {
                 setInputHistoryIndex(inputHistoryIndex);
                 e.target.value = inputHistory[inputHistoryIndex];
             }
-        } else {
+        }
+        if (e.key === "ArrowDown") {
+             if(inputHistoryIndex > 0) {
+                 inputHistoryIndex -= 1;
+                 setInputHistoryIndex(inputHistoryIndex);
+                 e.target.value = inputHistory[inputHistoryIndex];
+             }
+        }
+        else {
             setInputHistoryIndex(-1);
         }
 
