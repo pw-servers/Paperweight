@@ -34,12 +34,10 @@ function parseLine(line, index) {
                 )
     )
 
-    return <p>{ReactHTMLParser(outLine)}</p>;
+    return <p key={index}>{ReactHTMLParser(outLine)}</p>;
 }
 
 function makeLinksClickable(line) {
-    // eslint-disable-next-line no-control-regex
-    const regex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&/=]*)/, 'gi');
     const matches = line.matchAll(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/gi);
     for (let match of matches) {
         line = line.replaceAll(match[0], "<a target='_blank' class='console-link' href='" + match[0] +"'>" + match[0] + "</a>");
