@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {Plus} from "react-bootstrap-icons";
-import {getActiveEndpoint, getActiveEvents, socketConnect, SocketContext} from "./Socket";
+import {getActiveEndpoint, getActiveEvents, socketConnect, ConnectionStateContext} from "./Socket";
 
 function ServerIcon(props) {
     // const type = props.type
@@ -26,7 +26,7 @@ export function ServerComponent(props) {
     const server = props.server;
     const clientInfo = props.clientInfo;
 
-    const connectionState = useContext(SocketContext);
+    const connectionState = useContext(ConnectionStateContext);
 
     if(props.addServerButton) {
         return (

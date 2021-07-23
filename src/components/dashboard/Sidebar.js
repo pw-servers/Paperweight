@@ -3,11 +3,11 @@ import {ErrorBoundary} from "../ErrorBoundary";
 import {FirestoreCollection, FirestoreDocument} from "@react-firebase/firestore";
 import {Spinner} from "../Loading";
 import {ServerComponent} from "../Server";
-import {SocketContext} from "../Socket";
+import {ConnectionStateContext} from "../Socket";
 
 export function Sidebar(props) {
     const user = props.user;
-    const connectionState = useContext(SocketContext);
+    const connectionState = useContext(ConnectionStateContext);
 
     return (
         <div className="d-flex flex-column justify-content-flex-start align-items-flex-start sidebar">

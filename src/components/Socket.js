@@ -40,4 +40,4 @@ export async function socketConnect(ip, port) {
     return pendingPromise;
 }
 
-export const SocketContext = React.createContext(null);
+export const ConnectionStateContext = React.createContext(null);

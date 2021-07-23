@@ -2,7 +2,8 @@ import React, {useState} from "react";
 import {IfFirebaseAuthed} from "@react-firebase/auth";
 import Console from "./dashboard/Console";
 import {Sidebar} from "./dashboard/Sidebar";
-import {SocketContext, socketConnect} from "./Socket";
+import {ConnectionStateContext, socketConnect} from "./Socket";
+import {EmojiLaughing} from "react-bootstrap-icons";
 
 function DashboardContainer(props) {
     return (
@@ -32,7 +33,13 @@ export function Dashboard(props) {
         if(connectionState.connection != null) {
             return <DashboardContainer />
         } else {
-            return ""
+            return (
+                <div className="d-flex flex-column align-items-center justify-content-center pt-5">
+                    <EmojiLaughing className="text-muted mb-3" size={128} />
+                    <div className="text-muted display-5">Hey there!</div>
+                    <div className="text-muted">Pick or add a server on the <strong>sidebar</strong> to get started.</div>
+                </div>
+            )
         }
     }
 
@@ -40,10 +47,10 @@ export function Dashboard(props) {
         <IfFirebaseAuthed>
             {({ user }) => {
                 return (
-                    <SocketContext.Provider value={connectionState}>
+                    <ConnectionStateContext.Provider value={connectionState}>
                         <Sidebar user={user} />
                         <IfServerSelected />
-                    </SocketContext.Provider>
+                    </ConnectionStateContext.Provider>
                 )
             }}
         </IfFirebaseAuthed>

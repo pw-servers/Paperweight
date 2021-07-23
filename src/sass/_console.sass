@@ -1,13 +1,16 @@
 @import "colors"
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap')
 
-$pw-console-height: 340px
+
+$pw-console-height: 680px
 $pw-console-input-height: 40px
 
 .console
   overflow-x: hidden
   overflow-y: hidden
   height: $pw-console-height
-  font-family: monospace
+  font-family: 'PT Mono', monospace
+  font-size: 14px
   border: 3px solid $pw-light-gray
   border-radius: 0.25rem
 
@@ -15,6 +18,10 @@ $pw-console-input-height: 40px
   white-space: pre-wrap
   overflow-y: scroll
   height: $pw-console-height - $pw-console-input-height
+  scrollbar-color: #CCC #FFF
+  scrollbar-width: thin
+  p
+    margin-bottom: 0
 
 .console-input-container
   float: bottom
@@ -30,4 +37,5 @@ $pw-console-input-height: 40px
   background-color: #FFF
   z-index: 10000
   border-radius: 0 0 0.25rem 0.25rem
-  font-family: monospace
+  font-family: 'PT Mono', monospace
+  font-size: 14px

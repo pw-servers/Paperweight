@@ -1,60 +1,64 @@
 import React, {useEffect, useState} from 'react';
-import Card from 'react-bootstrap/Card';
-import {SocketContext} from "../Socket";
-
-function ConsoleTextRenderer(props) {
-    let consoleRef = React.createRef();
-    const text = props.text;
-
-    useEffect(() => {
-        consoleRef.current.scrollTop = consoleRef.current.scrollHeight;
-    })
-
-    return (
-        <div className="console-text" ref={consoleRef}>{text}</div>
-    )
-}
+import {ConsoleTextRenderer} from "./ConsoleTextRenderer";
+import {ConnectionStateContext} from "../Socket";
 
 function Console(props) {
 
-    let [consoleText, setConsoleText] = useState("");
+    let [consoleText, setConsoleText] = useState([]);
+    let [inputHistory, setInputHistory] = useState([]);
+    let [inputHistoryIndex, setInputHistoryIndex] = useState(-1);
 
-    const connectionState = React.useContext(SocketContext);
+    const connectionState = React.useContext(ConnectionStateContext);
 
     useEffect(() => {
+        function appendEventToConsole(event) {
+            appendToConsole(event.text);
+        }
+
         connectionState.connection.on('history', updateConsoleHistory);
-        connectionState.connection.on('server_output', appendToConsole);
+        connectionState.connection.on('server_output', appendEventToConsole);
 
         return () => {
             connectionState.connection.removeListener('history', updateConsoleHistory);
-            connectionState.connection.removeListener('server_output', appendToConsole);
+            connectionState.connection.removeListener('server_output', appendEventToConsole);
         }
     })
 
     function updateConsoleHistory(event) {
-        const records = event.records;
-        consoleText = "";
-        setConsoleText(records.map(rec => {return (rec.args.text || "")}).join(""));
+        consoleText = [];
+        setConsoleText(event.records.map(rec => {return (rec.args.text || "").split("\n")}).flat());
     }
 
-    function appendToConsole(data) {
-        console.log("appending to console: " + data.text);
-        setConsoleText(consoleText + data.text + "\n");
+    function appendToConsole(text) {
+        consoleText = [...consoleText, text.split("\n")].flat();
+        setConsoleText(consoleText);
     }
 
     function handleInput(e) {
         if (e.key === "Enter") {
-            appendToConsole({text: e.target.value});
+            appendToConsole(e.target.value);
+            inputHistory.push(e.target.value);
+            setInputHistory(inputHistory);
             connectionState.connection.emit('action', 'server_input', {id: "default", text: e.target.value + "\r\n"});
             e.target.value = "";
         }
+        if (e.key === "ArrowUp") {
+            if (inputHistoryIndex < inputHistory.length - 1) {
+                inputHistoryIndex += 1;
+                setInputHistoryIndex(inputHistoryIndex);
+                e.target.value = inputHistory[inputHistoryIndex];
+            }
+        } else {
+            setInputHistoryIndex(-1);
+        }
+
     }
 
     return (
         <div className="console">
             <ConsoleTextRenderer text={consoleText} />
             <div className="console-input-container">
-                <input type="text" id="consoleCommand" className="console-input" onKeyPress={handleInput} />
+                <input type="text" id="consoleCommand" className="console-input" onKeyDown={handleInput} />
             </div>
         </div>
     )
