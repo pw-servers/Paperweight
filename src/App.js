@@ -3,22 +3,14 @@ import { Login, config } from "./components/Auth";
 import { UserDisplay } from "./components/UserDisplay";
 
 import Container from 'react-bootstrap/Container';
-import React, {useState} from 'react';
+import React from 'react';
 import 'firebase/firestore';
 import "firebase/auth";
 import firebase from 'firebase/app'
 import {FirebaseAuthProvider} from "@react-firebase/auth";
 import {FirestoreProvider} from "@react-firebase/firestore";
-import {socketConnect} from "./components/Socket";
 
 function App() {
-  let [connection, setConnection] = useState(null);
-
-  async function connect(ip, port) {
-    connection = await socketConnect(ip, port);
-    setConnection(connection);
-    return connection;
-  }
 
   return (
     <Container>

@@ -1,13 +1,11 @@
-import React, {useContext} from "react";
+import React from "react";
 import {ErrorBoundary} from "../ErrorBoundary";
 import {FirestoreCollection, FirestoreDocument} from "@react-firebase/firestore";
 import {Spinner} from "../Loading";
 import {ServerComponent} from "../Server";
-import {ConnectionStateContext} from "../Socket";
 
 export function Sidebar(props) {
     const user = props.user;
-    const connectionState = useContext(ConnectionStateContext);
 
     return (
         <div className="d-flex flex-column justify-content-flex-start align-items-flex-start sidebar">
@@ -21,9 +19,9 @@ export function Sidebar(props) {
                                 return a.index - b.index;
                             })
                             return (
-                                d.value.map((server) => {
+                                d.value.map((server, index) => {
                                     return (
-                                        <FirestoreDocument path={"/servers/" + server.id + "/"}>
+                                        <FirestoreDocument key={index} path={"/servers/" + server.id + "/"}>
                                             {(serverItem) => {
                                                 if(serverItem.isLoading === false) {
                                                     return (

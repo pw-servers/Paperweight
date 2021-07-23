@@ -3,7 +3,6 @@ import {EventEmitter} from 'events';
 import React from "react";
 
 let currentConnection = null;
-let currentEndpoint = null;
 let pendingPromise = null;
 
 export async function socketConnect(ip, port) {
@@ -18,7 +17,6 @@ export async function socketConnect(ip, port) {
 
         let socket = io.connect(ip + ":" + port);
         currentConnection = socket;
-        currentEndpoint = ip + ":" + port;
 
         socket.on('connect', () => {
             console.log("Connected to " + ip + ":" + port);

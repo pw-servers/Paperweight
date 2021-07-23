@@ -1,6 +1,6 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {Plus} from "react-bootstrap-icons";
-import {getActiveEndpoint, getActiveEvents, socketConnect, ConnectionStateContext} from "./Socket";
+import {ConnectionStateContext} from "./Socket";
 
 function ServerIcon(props) {
     // const type = props.type
