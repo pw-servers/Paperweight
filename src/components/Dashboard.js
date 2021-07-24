@@ -26,11 +26,7 @@ export function Dashboard(props) {
 
     async function retryConnect() {
         console.log("attempting reconnect");
-        const ep = endpoint.split(":");
-        const ip = ep[0];
-        const port = ep[1];
-
-        await setEndpoint(ip, port);
+        await setEndpoint(...endpoint.split(":"));
     }
 
     let connectionState = {

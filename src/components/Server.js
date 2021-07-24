@@ -36,12 +36,14 @@ export function ServerComponent(props) {
             </div>
         )
     } else {
-        return (
-            <div className={(connectionState.endpoint === server.ip + ":" + server.port ? "selected " : "") + "d-flex flex-row align-items-center justify-content-flex-start server-icon-container"}
-            onClick={async () => {await connectionState.setEndpoint(server.ip, server.port); connectionState.setServerName(clientInfo.name)}}>
-                <ServerIcon name={clientInfo.name}/>
-                <span className="server-name">{clientInfo.name}</span>
-            </div>
-        )
+        if(props.server) {
+            return (
+                <div className={(connectionState.endpoint === server.ip + ":" + server.port ? "selected " : "") + "d-flex flex-row align-items-center justify-content-flex-start server-icon-container"}
+                     onClick={async () => {await connectionState.setEndpoint(server.ip, server.port); connectionState.setServerName(clientInfo.name)}}>
+                    <ServerIcon name={clientInfo.name}/>
+                    <span className="server-name">{clientInfo.name}</span>
+                </div>
+            )
+        }
     }
 }
