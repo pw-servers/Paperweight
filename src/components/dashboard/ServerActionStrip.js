@@ -18,7 +18,7 @@ export function ServerActionStrip(props) {
     };
 
     return (
-        <div className="d-flex flex-row align-items-baseline justify-content-start px-5 pb-4 w-100">
+        <div className="d-flex flex-row align-items-baseline justify-content-start pb-4 w-100">
             <strong className="gradient-text server-name">{connectionState.serverName}</strong>
             <small className="text-light text-uppercase text-muted px-2">{connectionState.endpoint}</small>
 
