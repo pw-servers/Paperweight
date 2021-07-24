@@ -1,0 +1,27 @@
+{
+  "name": "paperweight-relay",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "rimraf dist/ && tsc",
+    "start": "set DEBUG=pw:*&& npm run build && node dist/paperweight",
+    "start-paper": "npm start -- --type minecraft --file util/test-paper-server.bat",
+    "prepublish": "npm run build",
+    "test": "set DEBUG=pw:*&& jest"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.1.2",
+    "yargs": "^17.0.1",
+    "terminate": "^2.2.1",
+    "paperweight-common": "file:../paperweight-common"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.12",
+    "@types/jest": "^26.0.20",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.0",
+    "tslint": "^6.1.3",
+    "typescript": "^4.1.3",
+    "rimraf": "^3.0.2"
+  }
+}
