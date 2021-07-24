@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/paperweight/static/css/main.67b310b7.chunk.css",
+    "main.js": "/paperweight/static/js/main.c30b8170.chunk.js",
+    "main.js.map": "/paperweight/static/js/main.c30b8170.chunk.js.map",
+    "runtime-main.js": "/paperweight/static/js/runtime-main.b7bafba8.js",
+    "runtime-main.js.map": "/paperweight/static/js/runtime-main.b7bafba8.js.map",
+    "static/css/2.4be38407.chunk.css": "/paperweight/static/css/2.4be38407.chunk.css",
+    "static/js/2.08f2b065.chunk.js": "/paperweight/static/js/2.08f2b065.chunk.js",
+    "static/js/2.08f2b065.chunk.js.map": "/paperweight/static/js/2.08f2b065.chunk.js.map",
+    "static/js/3.7e443b97.chunk.js": "/paperweight/static/js/3.7e443b97.chunk.js",
+    "static/js/3.7e443b97.chunk.js.map": "/paperweight/static/js/3.7e443b97.chunk.js.map",
+    "index.html": "/paperweight/index.html",
+    "static/css/2.4be38407.chunk.css.map": "/paperweight/static/css/2.4be38407.chunk.css.map",
+    "static/css/main.67b310b7.chunk.css.map": "/paperweight/static/css/main.67b310b7.chunk.css.map",
+    "static/js/2.08f2b065.chunk.js.LICENSE.txt": "/paperweight/static/js/2.08f2b065.chunk.js.LICENSE.txt",
+    "static/media/pw_icon.d20ab7bc.svg": "/paperweight/static/media/pw_icon.d20ab7bc.svg",
+    "static/media/index.css": "/paperweight/static/media/wotfard-semibold-webfont.ab0633e6.ttf"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b7bafba8.js",
+    "static/css/2.4be38407.chunk.css",
+    "static/js/2.08f2b065.chunk.js",
+    "static/css/main.67b310b7.chunk.css",
+    "static/js/main.c30b8170.chunk.js"
+  ]
+}
