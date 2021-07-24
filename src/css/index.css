@@ -279,6 +279,18 @@
   box-shadow: 2px 5px 5px #F5F5F5;
 }
 
+.menu-item {
+  border-radius: 10px;
+  min-width: 50px;
+}
+.menu-item.selected {
+  background: linear-gradient(110deg, #5119de, #a191e9);
+  color: #FFF !important;
+}
+.menu-item.selected small {
+  color: #FFF !important;
+}
+
 #dashboardContainer {
   padding: 20px;
 }

@@ -30,7 +30,7 @@ export async function socketConnect(ip, port) {
         })
 
         socket.onAny((...args) => {
-            console.log("[" + args[2] + "]: " + JSON.stringify(args[3]));
+            // console.log("[" + args[2] + "]: " + JSON.stringify(args[3]));
             events.emit(args[2], args[3]);
         })
 

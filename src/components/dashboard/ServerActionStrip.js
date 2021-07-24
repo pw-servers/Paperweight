@@ -1,10 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {ConnectionStateContext} from "../Socket";
-import {Power, ArrowRepeat} from "react-bootstrap-icons";
+import {Power, ArrowRepeat, Terminal, People, Tools, Gear, Plug} from "react-bootstrap-icons";
 import {OverlayTrigger, Tooltip, Badge} from "react-bootstrap";
 
 export function ServerActionStrip(props) {
     const connectionState = React.useContext(ConnectionStateContext);
+    const pageState = props.pageState;
+
+    function PageIcon(props) {
+        const size = 24;
+        const page = props.page;
+        switch(page) {
+            case 'Console':
+                return <Terminal size={size} />
+            case 'Players':
+                return <People size={size} />
+            case 'Tools':
+                return <Tools size={size} />
+            case 'Settings':
+                return <Gear size={size} />
+            default:
+                return <Plug size={size} />
+        }
+    }
 
     function StatusBadge(props) {
         const status = props.status;
@@ -39,7 +57,18 @@ export function ServerActionStrip(props) {
 
             <StatusBadge status={connectionState.connectionStatus} />
 
-            <div className="flex-grow-1"></div>
+            {/* Page Menu */}
+            <div className="flex-grow-1 d-flex flex-row align-items-center justify-content-around">
+                {pageState.pages.map((page, index) => {
+                    return (
+                        <span key={index} className={"d-flex flex-column align-items-center justify-content-start clickable menu-item p-2" + (page === pageState.page ? " selected" : "")}
+                        onClick={() => {pageState.setPage(page)}}>
+                            <PageIcon page={page} />
+                            <small className="mt-1 text-muted">{page}</small>
+                        </span>
+                    )
+                })}
+            </div>
 
             <div className="power-group d-flex flex-row align-items-center justify-content-center px-3 py-1">
                 <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 500 }} overlay={renderTooltip({id: "power-tooltip", text: "Turn on/off the server"})}>

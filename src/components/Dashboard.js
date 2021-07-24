@@ -13,6 +13,9 @@ export function Dashboard(props) {
     let [connectionStatus, setConnectionStatus] = useState("disconnected");
     let [endpoint, internalSetEndpoint] = useState(null);
     let [serverName, setServerName] = useState(null);
+    let [page, setPage] = useState("Console");
+
+    let pages = ["Console", "Players", "Tools", "Settings"];
 
     async function setEndpoint(ip, port) {
         internalSetEndpoint(ip + ":" + port);
@@ -39,6 +42,12 @@ export function Dashboard(props) {
         setServerName
     };
 
+    let pageState = {
+        page,
+        pages,
+        setPage
+    }
+
     useEffect(() => {
         if(connection != null) {
             connection.on('disconnect', retryConnect);
@@ -54,7 +63,7 @@ export function Dashboard(props) {
     function DashboardContainer(props) {
         return (
             <div id="dashboardContainer" className="mx-auto">
-                <ServerActionStrip />
+                <ServerActionStrip pageState={pageState} />
                 <Console />
             </div>
         )
