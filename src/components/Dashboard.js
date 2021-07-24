@@ -98,7 +98,7 @@ export function Dashboard(props) {
                 return (
                     <div className="d-flex flex-column align-items-center justify-content-center pt-5">
                         <Spinner />
-                        <div className="text-muted">Trying to connect to server...</div>
+                        <div className="text-muted pt-4">Trying to connect to server...</div>
                     </div>
                 )
             } else {
