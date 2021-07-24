@@ -2,24 +2,24 @@
 @import "util"
 
 $pw-dashboard-sidebar-width: 120px
+$pw-dashboard-min-margin: 160px
 
 .sidebar
   @include animate-opacity-in(10, .5, .5)
   position: absolute
-  background-color: #FCFCFE
+  background-color: colors.$pw-very-light-gray
   left: 0
-  top: 100px
+  top: 120px
   width: $pw-dashboard-sidebar-width
   //height: calc(100vh - 100px)
   padding: 20px 20px 0 15px
-  margin-left: 10px
-  margin-top: 20px
+  margin-left: 20px
   border-radius: 10px
   border: 3px solid $pw-light-gray
   box-shadow: $pw-shadow
 
 .server-name
-  font-size: 1.3rem
+  font-size: 1.5rem
 
 .power-group
   border-radius: 10px
@@ -32,10 +32,47 @@ $pw-dashboard-sidebar-width: 120px
   &.selected
     background: colors.$pw-gradient
     color: #FFF !important
+    box-shadow: $pw-shadow
     small
       color: #FFF !important
 
+.menu-icon
+  width: 24px
+  height: 24px
+
 #dashboardContainer
+  position: absolute
+  top: 0
+  left: 0
+  width: 100vw
+  height: 100vh
+  display: flex
+  align-items: flex-start
+  justify-content: center
+  padding: 120px $pw-dashboard-min-margin $pw-dashboard-min-margin
+
+#dashboard
   //margin-left: $pw-dashboard-sidebar-width
   padding: 20px
+  border: 3px solid colors.$pw-light-gray
+  border-radius: 10px
+  background: linear-gradient(#FFF, colors.$pw-very-light-gray)
+  box-shadow: $pw-shadow
+  margin-left: clamp($pw-dashboard-min-margin, 50%, 10000px)
+  width: clamp(1000px, 80vw, 1800px)
 
+#serverNameCluster
+  border-bottom: 1px solid colors.$pw-light-gray
+  flex-direction: row
+  padding-bottom: .6rem
+
+// Rules for smaller screens
+@media (max-width: $media-sm-breakpoint)
+  #serverNameCluster
+    flex-direction: column
+    small
+      padding-left: 0
+
+  .menu-icon
+    width: 16px
+    height: 16px

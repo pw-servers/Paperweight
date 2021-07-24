@@ -12,15 +12,15 @@ export function ServerActionStrip(props) {
         const page = props.page;
         switch(page) {
             case 'Console':
-                return <Terminal size={size} />
+                return <Terminal className="menu-icon" />
             case 'Players':
-                return <People size={size} />
+                return <People className="menu-icon" />
             case 'Tools':
-                return <Tools size={size} />
+                return <Tools className="menu-icon" />
             case 'Settings':
-                return <Gear size={size} />
+                return <Gear className="menu-icon" />
             default:
-                return <Plug size={size} />
+                return <Plug className="menu-icon" />
         }
     }
 
@@ -51,11 +51,11 @@ export function ServerActionStrip(props) {
     };
 
     return (
-        <div className="d-flex flex-row align-items-baseline justify-content-start pb-4 w-100">
-            <strong className="gradient-text server-name">{connectionState.serverName}</strong>
-            <small className="text-light text-uppercase text-muted px-2">{connectionState.endpoint}</small>
-
-            <StatusBadge status={connectionState.connectionStatus} />
+        <div className="d-flex flex-row align-items-center justify-content-start pb-4 w-100">
+            <div id="serverNameCluster" className="d-flex align-items-baseline justify-content-start">
+                <strong className="gradient-text server-name">{connectionState.serverName}</strong>
+                <small className="very-small text-light text-uppercase text-muted px-2">{connectionState.endpoint}</small>
+            </div>
 
             {/* Page Menu */}
             <div className="flex-grow-1 d-flex flex-row align-items-center justify-content-around">
@@ -69,18 +69,20 @@ export function ServerActionStrip(props) {
                     )
                 })}
             </div>
-
-            <div className="power-group d-flex flex-row align-items-center justify-content-center px-3 py-1">
-                <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 500 }} overlay={renderTooltip({id: "power-tooltip", text: "Turn on/off the server"})}>
-                    {({ ref, ...triggerHandler }) => (
-                        <Power ref={ref} {...triggerHandler} className="px-2 clickable" size={40} onClick={() => {connectionState.connection.emit('action', 'stop_server', {id: "default"})}} />
-                    )}
-                </OverlayTrigger>
-                <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 500 }} overlay={renderTooltip({id: "power-tooltip", text: "Restart the server"})}>
-                    {({ ref, ...triggerHandler }) => (
-                        <ArrowRepeat ref={ref} {...triggerHandler} className="px-2 clickable" size={40} onClick={() => {connectionState.connection.emit('action', 'restart_server', {id: "default"})}} />
-                    )}
-                </OverlayTrigger>
+            <div className="d-flex flex-column align-items-end justify-content-center">
+                <StatusBadge status={connectionState.connectionStatus} />
+                <div className="power-group d-flex flex-row align-items-center justify-content-center px-3 py-1 mt-1">
+                    <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 500 }} overlay={renderTooltip({id: "power-tooltip", text: "Turn on/off the server"})}>
+                        {({ ref, ...triggerHandler }) => (
+                            <Power ref={ref} {...triggerHandler} className="px-2 clickable" size={40} onClick={() => {connectionState.connection.emit('action', 'stop_server', {id: "default"})}} />
+                        )}
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 500 }} overlay={renderTooltip({id: "power-tooltip", text: "Restart the server"})}>
+                        {({ ref, ...triggerHandler }) => (
+                            <ArrowRepeat ref={ref} {...triggerHandler} className="px-2 clickable" size={40} onClick={() => {connectionState.connection.emit('action', 'restart_server', {id: "default"})}} />
+                        )}
+                    </OverlayTrigger>
+                </div>
             </div>
         </div>
     )

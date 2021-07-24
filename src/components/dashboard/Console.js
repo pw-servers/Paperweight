@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ConsoleTextRenderer} from "./ConsoleTextRenderer";
 import {ConnectionStateContext} from "../Socket";
+import {ArrowRightCircle} from "react-bootstrap-icons";
 
 function Console(props) {
 
@@ -66,7 +67,8 @@ function Console(props) {
         <div className="console">
             <ConsoleTextRenderer text={consoleText} />
             <div className="console-input-container">
-                <input type="text" id="consoleCommand" className="console-input" onKeyDown={handleInput} />
+                <input type="text" id="consoleCommand" className="console-input" onKeyDown={handleInput}></input>
+                <ArrowRightCircle />
             </div>
         </div>
     )

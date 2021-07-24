@@ -62,10 +62,13 @@ export function Dashboard(props) {
 
     function DashboardContainer(props) {
         return (
-            <div id="dashboardContainer" className="mx-auto">
-                <ServerActionStrip pageState={pageState} />
-                <Console />
+            <div id="dashboardContainer">
+                <div id="dashboard">
+                    <ServerActionStrip pageState={pageState} />
+                    <Console />
+                </div>
             </div>
+
         )
     }
 

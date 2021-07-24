@@ -16,7 +16,7 @@ function App() {
     <Container>
       <FirebaseAuthProvider firebase={firebase} {...config}>
         <FirestoreProvider firebase={firebase} {...config}>
-          <header>
+          <header className="px-3">
             <div className="d-inline-flex flex-row align-items-center">
               <Icon className="icon mb-1" />
               <h5 className="display-5 fw-bold gradient-text">Paperweight</h5>
