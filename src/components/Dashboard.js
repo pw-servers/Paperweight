@@ -4,7 +4,7 @@ import Console from "./dashboard/Console";
 import {Sidebar} from "./dashboard/Sidebar";
 import {Spinner} from "./Loading";
 import {ConnectionStateContext, socketConnect} from "./Socket";
-import {EmojiLaughing} from "react-bootstrap-icons";
+import {EmojiLaughing, EmojiDizzy} from "react-bootstrap-icons";
 import {ServerActionStrip} from "./dashboard/ServerActionStrip";
 
 export function Dashboard(props) {
@@ -60,12 +60,30 @@ export function Dashboard(props) {
         }
     });
 
+    function ActivePage(props) {
+        pageState = props.pageState;
+
+        switch(pageState.page) {
+            case "Console":
+                connectionState.connection.emit('action', 'history_request', {id: "default"});
+                return <Console />
+            default:
+                return (
+                    <div className="d-flex flex-column align-items-center justify-content-center pt-5">
+                        <EmojiDizzy className="text-muted mb-3" size={128} />
+                        <div className="text-muted display-5">This page doesn't exist!</div>
+                        <div className="text-muted">Not sure how this happened, but the page you tried to access doesn't exist...</div>
+                    </div>
+                )
+        }
+    }
+
     function DashboardContainer(props) {
         return (
             <div id="dashboardContainer">
                 <div id="dashboard">
                     <ServerActionStrip pageState={pageState} />
-                    <Console />
+                    <ActivePage pageState={pageState} />
                 </div>
             </div>
 

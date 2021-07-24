@@ -16,6 +16,10 @@ function Console(props) {
             appendToConsole(event.text);
         }
 
+        function updateConsoleHistory(event) {
+            setConsoleText(event.records.map(rec => {return (rec.args.text || "").split("\n")}).flat());
+        }
+
         connectionState.connection.on('history', updateConsoleHistory);
         connectionState.connection.on('server_output', appendEventToConsole);
 
@@ -23,12 +27,7 @@ function Console(props) {
             connectionState.connection.removeListener('history', updateConsoleHistory);
             connectionState.connection.removeListener('server_output', appendEventToConsole);
         }
-    })
-
-    function updateConsoleHistory(event) {
-        consoleText = [];
-        setConsoleText(event.records.map(rec => {return (rec.args.text || "").split("\n")}).flat());
-    }
+    }, [consoleText, connectionState, appendToConsole]);
 
     function appendToConsole(text) {
         consoleText = [...consoleText, text.split("\n")].flat();
@@ -67,7 +66,7 @@ function Console(props) {
         <div className="console">
             <ConsoleTextRenderer text={consoleText} />
             <div className="console-input-container">
-                <input type="text" id="consoleCommand" className="console-input" onKeyDown={handleInput}></input>
+                <input type="text" id="consoleCommand" className="console-input" onKeyDown={handleInput} />
                 <ArrowRightCircle />
             </div>
         </div>

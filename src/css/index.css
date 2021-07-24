@@ -405,6 +405,7 @@ header {
 
 .clickable {
   cursor: pointer;
+  user-select: none;
 }
 .clickable:hover {
   opacity: 0.6;
