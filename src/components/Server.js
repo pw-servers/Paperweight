@@ -35,15 +35,22 @@ export function ServerComponent(props) {
                 <span className="server-name">Add a server</span>
             </div>
         )
-    } else {
-        if(props.server != null) {
-            return (
-                <div className={(connectionState.endpoint === server.ip + ":" + server.port ? "selected " : "") + "d-flex flex-row align-items-center justify-content-flex-start server-icon-container"}
-                     onClick={async () => {await connectionState.setEndpoint(server.ip, server.port); connectionState.setServerName(clientInfo.name)}}>
-                    <ServerIcon name={clientInfo.name}/>
-                    <span className="server-name">{clientInfo.name}</span>
-                </div>
-            )
-        }
+    }
+    else if(props.server) {
+        return (
+            <div className={(connectionState.endpoint === server.ip + ":" + server.port ? "selected " : "") + "d-flex flex-row align-items-center justify-content-flex-start server-icon-container"}
+                onClick={async () => {await connectionState.setEndpoint(server.ip, server.port); connectionState.setServerName(clientInfo.name)}}>
+                <ServerIcon name={clientInfo.name}/>
+                <span className="server-name">{clientInfo.name}</span>
+            </div>
+        )
+    }
+    else {
+        return (
+            <div className="py-4 border-secondary text-center text-black-50" style={{cursor:'default'}}>
+                <h4>ಠ╭╮ಠ</h4>
+                <small>{server || String(server)}</small>
+            </div>
+        );
     }
 }
