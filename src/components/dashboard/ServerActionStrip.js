@@ -1,10 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {ConnectionStateContext} from "../Socket";
 import {Power, ArrowRepeat} from "react-bootstrap-icons";
-import {OverlayTrigger, Tooltip} from "react-bootstrap";
+import {OverlayTrigger, Tooltip, Badge} from "react-bootstrap";
 
 export function ServerActionStrip(props) {
     const connectionState = React.useContext(ConnectionStateContext);
+
+    function StatusBadge(props) {
+        const status = props.status;
+        console.log(status);
+        switch(status) {
+            case 'connected':
+                return <Badge pill className="bg-success text-uppercase">Connected</Badge>
+            case 'connecting':
+                return <Badge pill className="bg-warning text-uppercase">Connecting...</Badge>
+            case 'disconnected':
+                return <Badge pill className="bg-danger text-uppercase">Disconnected</Badge>
+            default:
+                return <Badge pill className="bg-secondary text-uppercase">Status Unknown</Badge>
+        }
+    }
 
     function renderTooltip(props) {
         const text = props.text;
@@ -21,6 +36,8 @@ export function ServerActionStrip(props) {
         <div className="d-flex flex-row align-items-baseline justify-content-start pb-4 w-100">
             <strong className="gradient-text server-name">{connectionState.serverName}</strong>
             <small className="text-light text-uppercase text-muted px-2">{connectionState.endpoint}</small>
+
+            <StatusBadge status={connectionState.connectionStatus} />
 
             <div className="flex-grow-1"></div>
 

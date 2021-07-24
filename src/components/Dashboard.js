@@ -10,18 +10,19 @@ import {ServerActionStrip} from "./dashboard/ServerActionStrip";
 export function Dashboard(props) {
 
     let [connection, setConnection] = useState(null);
+    let [connectionStatus, setConnectionStatus] = useState("disconnected");
     let [endpoint, internalSetEndpoint] = useState(null);
     let [serverName, setServerName] = useState(null);
-    let [isConnecting, setConnecting] = useState(false);
 
     async function setEndpoint(ip, port) {
         internalSetEndpoint(ip + ":" + port);
-        setConnecting(true);
+        setConnectionStatus("connecting");
         setConnection(await socketConnect(ip, port));
-        setConnecting(false);
+        setConnectionStatus("connected");
     }
 
     async function retryConnect() {
+        console.log("attempting reconnect");
         const ep = endpoint.split(":");
         const ip = ep[0];
         const port = ep[1];
@@ -31,6 +32,7 @@ export function Dashboard(props) {
 
     let connectionState = {
         connection,
+        connectionStatus,
         endpoint,
         serverName,
         setEndpoint,
@@ -41,7 +43,6 @@ export function Dashboard(props) {
         if(connection != null) {
             connection.on('disconnect', retryConnect);
         }
-
 
         return () => {
             if(connection != null) {
@@ -60,10 +61,10 @@ export function Dashboard(props) {
     }
 
     function IfServerSelected(props) {
-        if(connectionState.connection != null && !isConnecting) {
+        if(connectionState.connection != null && connectionStatus === "connected") {
             return <DashboardContainer />
         } else {
-            if(isConnecting) {
+            if(connectionState.connection != null) {
                 return (
                     <div className="d-flex flex-column align-items-center justify-content-center pt-5">
                         <Spinner />
