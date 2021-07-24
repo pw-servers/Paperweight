@@ -6,16 +6,27 @@ $pw-dashboard-sidebar-width: 120px
 .sidebar
   @include animate-opacity-in(10, .5, .5)
   position: absolute
-  background-color: #F5F5FE
+  background-color: #FCFCFE
   left: 0
   top: 100px
   width: $pw-dashboard-sidebar-width
-  height: calc(100vh - 100px)
-  padding-left: 20px
-  padding-top: 20px
-  border-right: 3px solid $pw-light-gray
+  //height: calc(100vh - 100px)
+  padding: 20px 20px 0 15px
+  margin-left: 10px
+  margin-top: 20px
+  border-radius: 10px
+  border: 3px solid $pw-light-gray
+  box-shadow: $pw-shadow
+
+.server-name
+  font-size: 1.3rem
+
+.power-group
+  border-radius: 10px
+  border: 3px solid $pw-light-gray
+  box-shadow: $pw-shadow
 
 #dashboardContainer
-  margin-left: $pw-dashboard-sidebar-width
+  //margin-left: $pw-dashboard-sidebar-width
   padding: 20px
 
