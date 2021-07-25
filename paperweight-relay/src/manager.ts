@@ -2,8 +2,8 @@ import {spawn} from 'child_process';
 import * as path from 'path';
 import terminate from 'terminate';
 import {findServerInfo, removeServerInfo} from './config';
-import {runAction} from './action';
-import {clearServerHistory} from './history';
+import {runAction} from './actionHandler';
+import {SERVER_OUTPUT, SERVER_STARTED, SERVER_STOPPED} from 'paperweight-common';
 
 let processMap = new Map();
 
@@ -35,15 +35,21 @@ export async function startServer(id: string) {
     for(let [type, stream] of [['out', child.stdout], ['err', child.stderr]]) {
         // @ts-ignore
         stream.on('data', data => {
-            runAction('server_output', {
-                id,
-                type,
-                text: data ? data.toString() : '',
+            runAction({
+                type: SERVER_OUTPUT,
+                server: id,
+                args: {
+                    type,
+                    text: data ? data.toString() : '',
+                },
             });
         });
     }
 
-    await runAction('server_started', {id});
+    await runAction({
+        type: SERVER_STARTED,
+        server: id,
+    });
     child.on('exit', () => stopServer(id).catch(err => console.error(err.stack || err)));
 }
 
@@ -57,7 +63,7 @@ export async function stopServer(id: string): Promise<boolean> {
     if(child) {
         terminate(child.pid);
         processMap.delete(id);
-        await runAction('server_stopped', {id});
+        await runAction({type: SERVER_STOPPED, server: id});
         return true;
     }
     return false;
@@ -68,8 +74,8 @@ export async function removeServer(id: string): Promise<boolean> {
     if(await removeServerInfo(id)) {
         changed = true;
     }
-    await clearServerHistory(id)
-        .catch(err => console.error('Unable to clear server history:', id, err.stack || err));
+    // await clearServerHistory(id)
+    //     .catch(err => console.error('Unable to clear server history:', id, err.stack || err));
     return changed;
 }
 

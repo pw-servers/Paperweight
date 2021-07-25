@@ -1,17 +1,28 @@
-import EventEmitter from 'events';
+import {applyOperation, Operation} from 'fast-json-patch';
+import {Action, ActionType, getActionType} from './action';
+import {throttle} from 'throttle-debounce';
+import {Context} from './context';
 
-export default () => {
-    let events = new EventEmitter();
-    let state = {}
+export * from './action';
+export * from './actionTypes';
 
-    events.on('action', action => {
-        if(!action) {
-            return;
-        }
-        let {type, server, props} = action;
+export interface ServerConfig {
+    id: string,
+    name?: string,
+    type: string,
+    typeOptions?: object,
+    file: string,
+    args?: string[],
+    cwd?: string,
+    interpreter?: string,
+}
 
+export interface ServerState {
+    config: ServerConfig,
+    running: boolean,
+    history: Action[],
+}
 
-    });
-
-    return {events, state};
+export function createContext() {
+    return new Context();
 }

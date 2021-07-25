@@ -2,20 +2,10 @@
 
 import {promisify} from 'util';
 import fs from 'fs';
+import {ServerConfig} from 'paperweight-common/src/common';
 
 export interface Config {
-    servers: ServerInfo[],
-}
-
-export interface ServerInfo {
-    id: string,
-    name?: string,
-    type: string,
-    typeOptions?: object,
-    file: string,
-    args?: string[],
-    cwd?: string,
-    interpreter?: string,
+    servers: ServerConfig[],
 }
 
 let configPath = './paperweight.json';
@@ -55,7 +45,7 @@ export async function saveConfig(config: Config): Promise<boolean> {
     return true;
 }
 
-export async function findServerInfo(id: string): Promise<ServerInfo> {
+export async function findServerInfo(id: string): Promise<ServerConfig> {
     let config = await loadConfig();
     let info = config.servers.find(s => s.id === id);
     if(!info) {
@@ -64,7 +54,7 @@ export async function findServerInfo(id: string): Promise<ServerInfo> {
     return info;
 }
 
-export async function addServerInfo(info: ServerInfo) {
+export async function addServerInfo(info: ServerConfig) {
     let config = await loadConfig();
     if(config.servers.some(s => s.id === info.id)) {
         throw new Error('Duplicate server ID: ' + info.id);

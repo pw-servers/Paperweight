@@ -5,6 +5,3 @@ dist/
 
 # Local environment files
 .env.local
-
-# Paperweight files
-paperweight.json

@@ -2,9 +2,10 @@
   "name": "paperweight-relay",
   "version": "0.0.1",
   "scripts": {
-    "build": "rimraf dist/ && tsc",
+    "build-common": "cd ../paperweight-common && npm run build",
+    "build": "npm run build-common && rimraf dist/ && tsc",
     "start": "set DEBUG=pw:*&& npm run build && node dist/paperweight",
-    "start-paper": "npm start -- --type minecraft --file util/test-paper-server.bat",
+    "start-paper": "npm start -- --type minecraft --file util/test-paper-server.bat --name Paper",
     "prepublish": "npm run build",
     "test": "set DEBUG=pw:*&& jest"
   },

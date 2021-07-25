@@ -1,7 +1,7 @@
 import {loadConfig, setConfigSource} from '../config';
-import {runAction} from '../action';
+import {runAction} from '../actionHandler';
 import {connect, disconnect, listServers} from '../manager';
-import {findServerHistory} from '../history';
+import {ADD_SERVER, REMOVE_SERVER, START_SERVER} from 'paperweight-common';
 
 let serverExtension = process.platform === 'win32' ? '.bat' : '.sh';
 
@@ -19,31 +19,36 @@ afterAll(() => {
 
 test('add, start, stop, and remove a server', async () => {
 
-    let id = 'test';
+    let server = 'test';
 
     expect((await loadConfig()).servers.length).toEqual(0);
     expect((await listServers()).length).toEqual(0);
-    expect((await findServerHistory(id)).length).toEqual(0);
+    // expect((await findServerHistory(server)).length).toEqual(0);
 
-    await runAction('add_server', {
-        id,
-        file: 'util/test-wait' + serverExtension,
+    await runAction({
+        type: ADD_SERVER,
+        server,
+        args: {
+            file: 'util/test-wait' + serverExtension,
+        },
     });
 
     expect((await loadConfig()).servers.length).toEqual(1);
 
-    await runAction('start_server', {
-        id,
+    await runAction({
+        type: START_SERVER,
+        server,
     });
 
     expect((await listServers()).length).toEqual(1);
-    expect((await findServerHistory(id)).length).toBeGreaterThan(0);
+    // expect((await findServerHistory(server)).length).toBeGreaterThan(0);
 
-    await runAction('remove_server', {
-        id,
+    await runAction({
+        type: REMOVE_SERVER,
+        server,
     });
 
     expect((await loadConfig()).servers.length).toEqual(0);
     expect((await listServers()).length).toEqual(0);
-    expect((await findServerHistory(id)).length).toEqual(0);
+    // expect((await findServerHistory(server)).length).toEqual(0);
 });

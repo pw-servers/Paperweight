@@ -1,8 +1,8 @@
 import {start} from './socket';
-import {runAction} from './action';
+import {runAction} from './actionHandler';
 import yargs from 'yargs';
 import {setConfigSource} from './config';
-import * as path from 'path';
+import {ADD_SERVER, START_SERVER} from 'paperweight-common';
 
 let {argv} = yargs(process.argv);
 
@@ -13,15 +13,25 @@ let {argv} = yargs(process.argv);
     if(argv.file) {
         console.log('Starting server:', argv.file);
         setConfigSource(null);
-        let id = argv.id || 'default';
-        await runAction('add_server', {
-            id,
-            ...argv,
-            // file: 'java',
-            // args: '-jar ..\\paperweight-plugin\\debug\\spigot\\server.jar -nogui',
-            // cwd: path.dirname(String(startFile)),
+
+        let id = String(argv.id || 'default');
+        let args = {...argv} as any;
+        args.id = id;
+        delete args._;
+        delete args.$0;
+
+        await runAction({
+            type: ADD_SERVER,
+            server: id,
+            args: {
+                ...args,
+            },
         });
-        await runAction('start_server', {id});
+
+        await runAction({
+            type: START_SERVER,
+            server: id,
+        });
 
         // setInterval(() => runAction('server_input', {id, text: 'stop\r\n'}), 3000);/////////
     }
