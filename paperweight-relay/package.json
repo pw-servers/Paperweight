@@ -5,6 +5,7 @@
     "build-common": "cd ../paperweight-common && npm run build",
     "build": "npm run build-common && rimraf dist/ && tsc",
     "start": "set DEBUG=pw:*&& npm run build && node dist/paperweight",
+    "start-hello": "npm start -- --file util/test-wait.bat --name Hello",
     "start-paper": "npm start -- --type minecraft --file util/test-paper-server.bat --name Paper",
     "prepublish": "npm run build",
     "test": "set DEBUG=pw:*&& jest"

@@ -1,7 +1,7 @@
 import {applyOperation, Operation} from 'fast-json-patch';
 import {Action, ActionType, getActionType} from './action';
 import {throttle} from 'throttle-debounce';
-import {Context} from './context';
+import {Protocol} from './protocol';
 
 export * from './action';
 export * from './actionTypes';
@@ -23,6 +23,6 @@ export interface ServerState {
     history: Action[],
 }
 
-export function createContext() {
-    return new Context();
+export function createProtocol() {
+    return new Protocol();
 }

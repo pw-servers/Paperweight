@@ -1,6 +1,5 @@
-import { io } from "socket.io-client";
+import {io} from "socket.io-client";
 import {EventEmitter} from 'events';
-import React from "react";
 
 let currentConnection = null;
 let pendingPromise = null;
@@ -13,32 +12,59 @@ export async function socketConnect(ip, port) {
     currentConnection = null;
     pendingPromise = new Promise((resolve, reject) => {
 
-        let events = new EventEmitter();
+        let protocol = require('paperweight-common').createProtocol();
+        let events = new EventEmitter(); // `protocol.getEventEmitter()` takes some weight off this guy's shoulders
 
         let socket = io.connect(ip + ":" + port);
         currentConnection = socket;
 
         socket.on('connect', () => {
             console.log("Connected to " + ip + ":" + port);
-            socket.emit('action', 'history_request', {
-                "id": "default"
-            });
+            // socket.emit('action', {
+            //     type: 'history_request',
+            //     id: "default",
+            // });
             socket.once('disconnect', () => {
                 events.emit('disconnect');
-            })
-            resolve(events);
-        })
+                // Probably `socket.close()` to prevent auto-reconnect, since socket.io disconnects and reconnects occasionally
+            });
+            resolve({protocol, events});
+        });
 
         socket.onAny((...args) => {
-            // console.log("[" + args[2] + "]: " + JSON.stringify(args[3]));
-            events.emit(args[2], args[3]);
-        })
+            // console.warn(...args);///
 
-        events.on('action', (type, args) => {
-            socket.emit('action', type, args);
-        })
-    })
+            let messageType = args[1];
+            if(messageType === 'action') {
+                let [action, callback] = args.slice(2);
+                if(callback) {
+                    action.callback = callback;
+                }
+                protocol.runAction(action);
+                // events.emit('action', action);
+            }
+            else if(messageType === 'server_state') {
+                let [server, state] = args.slice(2);
+                protocol.setState(server, state);
+            }
+        });
+
+        // TODO: close listeners
+
+        // Run action locally
+        protocol.onAction(async action => {
+            events.emit('action', action);
+        });
+
+        // Send an action to the server
+        protocol.onSendAction(async action => {
+            console.log('SEND:', action); // TEMP away
+
+            // Send callback as second argument
+            let args = action.callback ? [{...action, callback: undefined}, action.callback] : [action];
+            socket.emit('action', ...args);
+        });
+
+    });
     return pendingPromise;
 }
-
-export const ConnectionStateContext = React.createContext(null);

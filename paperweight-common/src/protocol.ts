@@ -4,15 +4,12 @@ import {Action, ActionType, getActionType} from './action';
 import {ServerState} from './common';
 
 const logAction = require('debug')('pw:action');
-const logServerState = require('debug')('pw:server_state');
 
-export class Context {
+// const logServerState = require('debug')('pw:server_state');
+
+export class Protocol {
     private _events = new EventEmitter();
     private _serverStateMap = new Map<string, ServerState>();
-    private _notifyState = async (server: string, state: any) => {
-        logServerState(server, state);
-        await this._events.emit('server_state', server, state);
-    };
 
     constructor() {
         this.onAction(async (action: Action) => {
@@ -45,17 +42,18 @@ export class Context {
         return this._events;
     }
 
-    getServerKeys() {
-        return Object.keys(this._serverStateMap);
-    }
-
     getState(server: string): ServerState | undefined {
         return this._serverStateMap.get(server);
     }
 
     async setState(server: string, state: ServerState) {
+        // noinspection all
+        if(typeof server !== 'string') {
+            throw new Error('Server ID must be a string');
+        }
         this._serverStateMap.set(server, state);
-        await this._notifyState(server, state);
+        // logServerState(server, state);
+        await this._events.emit('server_state', server, state);
     }
 
     async removeState(server: string) {
@@ -71,11 +69,16 @@ export class Context {
     }
 
     async runAction(action: { type: string | ActionType, timestamp?: number, server?: string, args?: object } | Action) {
-        if(!action.timestamp) {
+        let newAction = !action.timestamp;
+        if(newAction) {
             action.timestamp = Date.now();
         }
         if(!action.args) {
             action.args = {};
+        }
+        // noinspection all
+        if(action.server && typeof action.server !== 'string') {
+            throw new Error('Server ID must be a string');
         }
         let actionType;
         if(typeof action.type === 'string') {
@@ -89,10 +92,18 @@ export class Context {
             await actionType.config.run(this, action as Action);
         }
         await this._events.emit('action', action);
+
+        if(newAction) {
+            await this._events.emit('send_action', action);
+        }
     }
 
     async onAction(callback: (action: Action) => Promise<void>) {
         await this._events.on('action', callback);
+    }
+
+    async onSendAction(callback: (action: Action) => Promise<void>) {
+        await this._events.on('send_action', callback);
     }
 
     async onServerState(callback: (server: string, state: ServerState) => Promise<void>) {

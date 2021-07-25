@@ -1,5 +1,5 @@
 import {addActionType} from './action';
-import {Context} from './context';
+import {Protocol} from './protocol';
 
 
 export const RELAY_STARTED = addActionType({

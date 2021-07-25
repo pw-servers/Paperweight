@@ -1,5 +1,7 @@
+import {Action} from 'paperweight-common';
+
 export default {
-    async run(args: { text: string }) {
-        console.error('Error:', args.text);
+    async run({args}: Action) {
+        console.error('Error:', args);
     },
 };

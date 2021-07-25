@@ -1,10 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {ConnectionStateContext} from "../Socket";
+import React, {useContext, useEffect, useState} from 'react';
+import {ConnectionStateContext} from "../../contexts/ConnectionStateContext";
 import {Power, ArrowRepeat, Terminal, People, Tools, Gear, Plug} from "react-bootstrap-icons";
 import {OverlayTrigger, Tooltip, Badge} from "react-bootstrap";
+import {ProtocolContext} from '../../contexts/ProtocolContext';
+import {RESTART_SERVER, STOP_SERVER} from 'paperweight-common';
 
 export function ServerActionStrip(props) {
-    const connectionState = React.useContext(ConnectionStateContext);
+    const serverID = 'default'; // TODO props later
+
+    const protocol = useContext(ProtocolContext);
+    const connectionState = useContext(ConnectionStateContext);
     const pageState = props.pageState;
 
     function PageIcon(props) {
@@ -74,12 +79,14 @@ export function ServerActionStrip(props) {
                 <div className="power-group d-flex flex-row align-items-center justify-content-center px-3 py-1 mt-1">
                     <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 500 }} overlay={renderTooltip({id: "power-tooltip", text: "Turn on/off the server"})}>
                         {({ ref, ...triggerHandler }) => (
-                            <Power ref={ref} {...triggerHandler} className="px-2 clickable" size={40} onClick={() => {connectionState.connection.emit('action', 'stop_server', {id: "default"})}} />
+                            <Power ref={ref} {...triggerHandler} className="px-2 clickable" size={40} onClick={() => protocol.runAction({type: STOP_SERVER, server: serverID})
+                                .catch(err => console.error('This error wants to be displayed in a banner:', err.message || err))} />
                         )}
                     </OverlayTrigger>
                     <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 500 }} overlay={renderTooltip({id: "power-tooltip", text: "Restart the server"})}>
                         {({ ref, ...triggerHandler }) => (
-                            <ArrowRepeat ref={ref} {...triggerHandler} className="px-2 clickable" size={40} onClick={() => {connectionState.connection.emit('action', 'restart_server', {id: "default"})}} />
+                            <ArrowRepeat ref={ref} {...triggerHandler} className="px-2 clickable" size={40} onClick={() => protocol.runAction({type: RESTART_SERVER, server: serverID})
+                                .catch(err => console.error('This error wants to be displayed in a banner:', err.message || err))} />
                         )}
                     </OverlayTrigger>
                 </div>

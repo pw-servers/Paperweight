@@ -1,5 +1,5 @@
 import {basename, resolve} from 'path';
-import {Context} from './context';
+import {Protocol} from './protocol';
 
 export interface Action {
     type: string,
@@ -13,7 +13,7 @@ export interface Action {
 export interface ActionConfig {
     id: string,
     skipHistory?: boolean,
-    run?: (context: Context, action: Action) => Promise<void>,
+    run?: (context: Protocol, action: Action) => Promise<void>,
 }
 
 export class ActionType {

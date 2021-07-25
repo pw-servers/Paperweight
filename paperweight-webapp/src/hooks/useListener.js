@@ -2,21 +2,24 @@ import {useEffect} from 'react';
 
 export default function useListener(target, event, listener, options) {
 
-    let domTarget = 'addEventListener' in target;
-
     useEffect(() => {
+        if(!target) {
+            return;
+        }
+
+        let domTarget = 'addEventListener' in target;
         if(domTarget) {
             target.addEventListener(event, listener, options);
         }
         else {
-            target.addListener(event, listener, options);
+            target.on(event, listener, options);
         }
         return () => {
             if(domTarget) {
                 target.removeEventListener(event, listener);
             }
             else {
-                target.removeListener(event, listener);
+                target.off(event, listener);
             }
         };
     });

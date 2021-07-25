@@ -2,7 +2,7 @@ import express, {Request, Response} from 'express';
 import http from 'http';
 import {Server, Socket} from 'socket.io';
 import {Action, CONFIG, ERROR, getActionType} from 'paperweight-common';
-import {context, runAction} from './actionHandler';
+import {protocol, runAction} from './actionHandler';
 import {loadConfig} from './config';
 
 const log = require('debug')('pw:socket');
@@ -48,13 +48,15 @@ export function start(config: { port?: number } = {}) {
 
         socket.on('action', (action: any, callback?: (value: any) => void) => {
             log(`[${socket.id}] Action:`, action);
-            action.type = getActionType(action.type);
-            action.sender = socket.id;/////
-            if(callback) {
-                action.callback = callback;
-            }
-            runAction(action)
-                .catch(err => runAction({type: ERROR, args: {text: err.message || err}}));
+            (async () => {
+                action.type = getActionType(action.type);
+                action.sender = socket.id;/////
+                if(callback) {
+                    action.callback = callback;
+                }
+                await runAction(action);
+
+            })().catch((err: any) => runAction({type: ERROR, args: {text: err.message || err}}));
         });
 
         (async () => {
@@ -68,9 +70,9 @@ export function start(config: { port?: number } = {}) {
             });
 
             for(let server of config.servers) {
-                socket.send('server_state', server, context.getState(server.id));
+                socket.send('server_state', server.id, protocol.getState(server.id));
             }
-        })();
+        })().catch(err => console.error(err.stack || err));
     });
 
     // @ts-ignore

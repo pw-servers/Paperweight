@@ -2,7 +2,7 @@
 
 import {promisify} from 'util';
 import fs from 'fs';
-import {ServerConfig} from 'paperweight-common/src/common';
+import {ServerConfig} from 'paperweight-common';
 
 export interface Config {
     servers: ServerConfig[],

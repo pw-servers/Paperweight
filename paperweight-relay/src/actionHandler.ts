@@ -1,14 +1,14 @@
 import fs from 'fs';
 import {clients, sendAction} from './socket';
-import {createContext, Action} from 'paperweight-common';
+import {createProtocol, Action} from 'paperweight-common';
 
-export const context = createContext();
+export const protocol = createProtocol();
 
-context.onAction(async (action: Action) => {
+protocol.onAction(async (action: Action) => {
 
     let actionHandler = getActionHandler(action.type);
     if(actionHandler) {
-        actionHandler.run(action);
+        await actionHandler.run(action);
     }
 
     // Broadcast to other clients
@@ -23,7 +23,7 @@ function getActionHandler(type: string) {
     return actionHandlerMap.get(type);
 }
 
-export const runAction = context.runAction.bind(context);
+export const runAction = protocol.runAction.bind(protocol);
 
 export const actionHandlerMap = new Map<string, any>();
 
