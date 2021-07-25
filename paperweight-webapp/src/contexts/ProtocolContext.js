@@ -1,3 +1,3 @@
-import React from 'react';
+import {createContext} from 'react';
 
-export const ProtocolContext = React.createContext(null);
+export const ProtocolContext = createContext(null);

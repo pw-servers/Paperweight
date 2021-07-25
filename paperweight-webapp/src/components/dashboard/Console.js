@@ -5,30 +5,25 @@ import {ArrowRightCircle} from "react-bootstrap-icons";
 import useListener from '../../hooks/useListener';
 import {ProtocolContext} from '../../contexts/ProtocolContext';
 import {SERVER_INPUT} from 'paperweight-common';
+import useServerState from '../../hooks/useServerState';
 
 function Console(props) {
 
     let serverID = 'default'; // TODO props later
 
     const protocol = useContext(ProtocolContext);
-    const connectionState = useContext(ConnectionStateContext);
+    // const connectionState = useContext(ConnectionStateContext);
 
-    let [consoleText, setConsoleText] = useState(() => {
-        let state = protocol.getState(serverID);
-        return state ? findConsoleText(state.history) : [];
-    });
+    let consoleText = useServerState(protocol, serverID, state => state ? findConsoleText(state.history) : []);
     let [inputHistory, setInputHistory] = useState([]);
     let [inputHistoryIndex, setInputHistoryIndex] = useState(-1);
+
+    /// >>>>>> Example for how to hook into whether the server is running (move to wherever you need it):
+    let running = useServerState(protocol, serverID, state => state && state.running);
 
     // useListener(connectionState.connection, 'history', event => {
     //     setConsoleText(event.records.map(rec => {return (rec.args.text || "").split("\n")}).flat());
     // })
-
-    useListener(protocol.getEventEmitter(), 'server_state', async (server, state) => {
-        if(server === serverID) {
-            setConsoleText(findConsoleText(state.history));
-        }
-    });
 
     // Parse text from action history
     function findConsoleText(history) {
@@ -60,14 +55,14 @@ function Console(props) {
     //     }
     // }, [consoleText, connectionState, appendToConsole]);
 
-    function appendToConsole(text) {
-        consoleText = [...consoleText, text.split("\n")].flat();
-        setConsoleText(consoleText);
-    }
+    // function appendToConsole(text) {
+    //     consoleText = [...consoleText, text.split("\n")].flat();
+    //     setConsoleText(consoleText);
+    // }
 
     function handleInput(e) {
         if(e.key === "Enter") {
-            appendToConsole(e.target.value);
+            // appendToConsole(e.target.value);
             inputHistory.unshift(e.target.value);
             setInputHistory(inputHistory);
             protocol.runAction({type: SERVER_INPUT, server: serverID, args: {text: e.target.value + "\r\n"}})
