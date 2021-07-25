@@ -1,8 +1,6 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {ConsoleTextRenderer} from "./ConsoleTextRenderer";
-import {ConnectionStateContext} from "../../contexts/ConnectionStateContext";
 import {ArrowRightCircle} from "react-bootstrap-icons";
-import useListener from '../../hooks/useListener';
 import {ProtocolContext} from '../../contexts/ProtocolContext';
 import {SERVER_INPUT} from 'paperweight-common';
 import useServerState from '../../hooks/useServerState';
