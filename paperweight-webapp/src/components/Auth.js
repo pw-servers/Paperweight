@@ -1,11 +1,11 @@
 import React from "react";
 
+import { FirebaseAuthConsumer, IfFirebaseAuthed, IfFirebaseUnAuthed } from "@react-firebase/auth";
+import firebase from 'firebase/app';
 import "firebase/auth";
-import firebase from 'firebase/app'
-import {FirebaseAuthConsumer, IfFirebaseAuthed, IfFirebaseUnAuthed} from "@react-firebase/auth";
-import {ReactComponent as Icon} from "../icon/pw_icon.svg";
-import {Button} from "react-bootstrap"
-import {Dashboard} from "./Dashboard";
+import { Button } from "react-bootstrap";
+import { ReactComponent as Icon } from "../icon/pw_icon.svg";
+import { Dashboard } from "./Dashboard";
 
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
@@ -33,7 +33,7 @@ export const config = {
 
 function LoginScreen() {
     return (
-        <div id="authWindow" className="d-flex flex-column align-content-center card card-body mx-auto">
+        <div id="authWindow" className="d-flex flex-column align-content-center card card-body mx-auto mt-20">
             <small className="text-muted">WELCOME TO</small>
             <div className="d-inline-flex flex-row align-items-center">
                 <Icon className="icon mb-1"/>

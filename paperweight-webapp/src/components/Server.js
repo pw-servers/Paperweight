@@ -1,6 +1,6 @@
-import React, {useContext} from 'react';
-import {Plus} from "react-bootstrap-icons";
-import {ConnectionStateContext} from "../contexts/ConnectionStateContext";
+import React, { useContext } from 'react';
+import { Plus } from "react-bootstrap-icons";
+import { ConnectionStateContext } from "../contexts/ConnectionStateContext";
 
 function ServerIcon(props) {
     // const type = props.type
@@ -22,13 +22,11 @@ function ServerIcon(props) {
 }
 
 
-export function ServerComponent(props) {
-    const server = props.server;
-    const clientInfo = props.clientInfo;
+export function ServerComponent({ server, clientInfo, addServerButton = false }) {
 
     const connectionState = useContext(ConnectionStateContext);
 
-    if(props.addServerButton) {
+    if(addServerButton) {
         return (
             <div id="addServer" className="d-flex flex-row align-items-center justify-content-flex-start server-icon-container">
                 <div className="server-icon text-muted d-flex align-items-center justify-content-center"><Plus /></div>
@@ -36,7 +34,7 @@ export function ServerComponent(props) {
             </div>
         )
     }
-    else if(props.server) {
+    else if(server) {
         return (
             <div className={(connectionState.endpoint === server.ip + ":" + server.port ? "selected " : "") + "d-flex flex-row align-items-center justify-content-flex-start server-icon-container"}
                 onClick={async () => {await connectionState.setEndpoint(server.ip, server.port); connectionState.setServerName(clientInfo.name)}}>

@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import ReactHTMLParser from 'react-html-parser';
+import parse from 'html-react-parser';
+import React, { useEffect } from "react";
 
 // This file contains a lot of raw HTML (not JSX) that is parsed by ReactHTMLParser.
 // This is done to make it easier to handle the layers of parsing done to mark up the console text.
@@ -34,7 +34,7 @@ function parseLine(line, index) {
                 )
     )
 
-    return <p key={index}>{ReactHTMLParser(outLine)}</p>;
+    return <p key={index}>{parse(outLine)}</p>;
 }
 
 function makeLinksClickable(line) {
